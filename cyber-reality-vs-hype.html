@@ -1,0 +1,305 @@
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // Expanded qualitative dataset
+    const causes = [
+      // ==== Initial Access ====
+      {
+        group: "Initial Access",
+        name: "Phishing (incl. Helpdesk Social Engineering)",
+        type: "User / Social Engineering",
+        reality: 9.5,
+        hype: 7,
+        notes: "Still the #1 way ransomware and BEC start. Helpdesk impersonation, fake MFA prompts, and callback phishing are relentless and highly effective.",
+      },
+      {
+        group: "Initial Access",
+        name: "Stolen / Reused Credentials",
+        type: "Identity / Infostealer Markets",
+        reality: 9,
+        hype: 7.5,
+        notes: "Infostealers → Genesis/2easy/Russian Market → valid VPN/O365/RDP logins. This is the quiet fuel of most large breaches.",
+      },
+      {
+        group: "Initial Access",
+        name: "Known Vulnerability in Edge Services (VPN, Proxy, etc.)",
+        type: "Patch / Hygiene",
+        reality: 8.5,
+        hype: 6,
+        notes: "ProxyShell, ProxyLogon, FortiGate, CitrixBleed, old Pulse Secure bugs… attackers camp on known vulns for months or years.",
+      },
+      {
+        group: "Initial Access",
+        name: "Brute Force / Credential Stuffing",
+        type: "Identity / Login Abuse",
+        reality: 7.5,
+        hype: 5,
+        notes: "RDP, SSH, OWA, VPN portals with no MFA or weak passwords. Boring, cheap, and works every day.",
+      },
+      {
+        group: "Initial Access",
+        name: "Zero-Day in VPN / Edge Appliance",
+        type: "Zero-day / Edge",
+        reality: 4,
+        hype: 10,
+        notes: "Ivanti, Palo Alto, Cisco, MoveIt… When they drop, the whole industry panics and every vendor mentions it for years.",
+      },
+      {
+        group: "Initial Access",
+        name: "Supply-Chain Compromise (Software/Update)",
+        type: "Supply Chain",
+        reality: 5,
+        hype: 9.5,
+        notes: "SolarWinds, Kaseya, Log4Shell, 3CX, MOVEit. Rare but catastrophic → massive media and marketing mileage.",
+      },
+      {
+        group: "Initial Access",
+        name: "Malicious USB Drop / Rubber Ducky",
+        type: "Physical / Movie Myth",
+        reality: 1,
+        hype: 9,
+        notes: "Endlessly shown at cons and in movies. Almost never seen as the initial vector in real enterprise breaches.",
+      },
+      {
+        group: "Initial Access",
+        name: "Intentionally Malicious USB (left in parking lot)",
+        type: "Physical / Social Engineering",
+        reality: 1.5,
+        hype: 8.5,
+        notes: "People still make these at DEF CON, but actual ransomware crews don’t bother dropping $50 USBs in parking lots.",
+      },
+      {
+        group: "Initial Access",
+        name: "Evil Maid / Hotel Room Attack",
+        type: "Physical / Targeted",
+        reality: 1,
+        hype: 8,
+        notes: "Nation-state level against high-value journalists or dissidents only. Zero relevance to 99.9% of companies.",
+      },
+      {
+        group: "Initial Access",
+        name: "Public Wi-Fi MITM (Pineapple, etc.)",
+        type: "Wireless / Myth",
+        reality: 2,
+        hype: 8,
+        notes: "Still in every airport security briefing. Real breaches almost never start this way.",
+      },
+      {
+        group: "Initial Access",
+        name: "Watering Hole / Strategic Website Compromise",
+        type: "Targeted",
+        reality: 3,
+        hype: 7,
+        notes: "Used occasionally by APTs, almost never by ransomware or common criminals.",
+      },
+
+      // ==== Internal Movement & Impact ====
+      {
+        group: "Internal Movement & Impact",
+        name: "Active Directory Compromise",
+        type: "Identity / Crown Jewels",
+        reality: 9.5,
+        hype: 6,
+        notes: "Golden Ticket, DCSync, Kerberoasting, privilege escalation via misconfig — this is how most environments actually fall.",
+      },
+      {
+        group: "Internal Movement & Impact",
+        name: "Virtualisation Platform Takeover (vCenter, ESXi, Hyper-V)",
+        type: "Infra / Blast Radius",
+        reality: 8.5,
+        hype: 5,
+        notes: "One compromised hypervisor = encrypt or ransom hundreds of VMs instantly. Hugely underrated risk.",
+      },
+      {
+        group: "Internal Movement & Impact",
+        name: "Backup System Deletion / Encryption",
+        type: "Recovery Sabotage",
+        reality: 8,
+        hype: 4.5,
+        notes: "Now standard play in mature ransomware playbooks, yet many organisations still treat backups as an afterthought.",
+      },
+      {
+        group: "Internal Movement & Impact",
+        name: "Living-off-the-Land (LOLBins, WMI, PsExec)",
+        type: "Stealth Movement",
+        reality: 9,
+        hype: 6,
+        notes: "Attackers love built-in tools because they don’t trigger EDR. Super common, but doesn’t sound sexy.",
+      },
+      {
+        group: "Internal Movement & Impact",
+        name: "Pass-the-Hash / Overpass-the-Hash",
+        type: "Legacy Auth Abuse",
+        reality: 7,
+        hype: 4,
+        notes: "NTLM still everywhere. Old techniques, still extremely effective in Windows-heavy environments.",
+      },
+      {
+        group: "Internal Movement & Impact",
+        name: "ZeroLogon / PrintNightmare-style Domain Controller Bugs",
+        type: "High-Priv Exploit",
+        reality: 6,
+        hype: 9,
+        notes: "When they land, instant domain admin. Massive hype, then everyone patches… until the next one.",
+      },
+      {
+        group: "Internal Movement & Impact",
+        name: "Physical Console Access (crash cart, iLO/iDRAC)",
+        type: "Physical / Insider",
+        reality: 3,
+        hype: 8,
+        notes: "Cool red-team demo, but rarely the path for external attackers. Insider threat or disgruntled admin only.",
+      },
+      {
+        group: "Internal Movement & Impact",
+        name: "AI-Powered Polymorphic Malware",
+        type: "Futuristic Threat",
+        reality: 1,
+        hype: 9,
+        notes: "Every vendor is now selling “AI detection for AI malware”. In reality, almost zero incidents involve it today.",
+      },
+      {
+        group: "Internal Movement & Impact",
+        name: "Quantum Breaking Encryption",
+        type: "Future / Sci-Fi",
+        reality: 0,
+        hype: 7,
+        notes: "Harvest-now-decrypt-later is real, but large-scale quantum breaks are still decades away. Great for grant proposals though.",
+      }
+    ];
+
+    const maxScore = 10;
+    const chartMain = document.getElementById("chartMain");
+    const detailPanel = document.getElementById("detailPanel");
+    const groups = [...new Set(causes.map(c => c.group))];
+    const activeState = { element: null, cause: null };
+
+    function render() {
+      chartMain.innerHTML = ""; // clear
+      groups.forEach(groupName => {
+        const groupTitle = document.createElement("div");
+        groupTitle.className = "group-title";
+        groupTitle.textContent = groupName;
+        chartMain.appendChild(groupTitle);
+
+        causes
+          .filter(c => c.group === groupName)
+          .forEach(cause => {
+            const row = document.createElement("div");
+            row.className = "row";
+            row.dataset.name = cause.name;
+
+            // Labels
+            const labels = document.createElement("div");
+            labels.className = "row-labels";
+
+            const nameEl = document.createElement("div");
+            nameEl.className = "cause-name";
+            nameEl.textContent = cause.name;
+
+            const metaEl = document.createElement("div");
+            metaEl.className = "cause-meta";
+
+            const typeBadge = document.createElement("span");
+            typeBadge.className = "badge badge--type";
+            typeBadge.textContent = cause.type;
+
+            const gap = cause.hype - cause.reality;
+            let gapBadge = null;
+            if (Math.abs(gap) >= 3) {
+              gapBadge = document.createElement("span");
+              gapBadge.className = "badge " + (gap > 0 ? "badge--gap-high" : "badge--gap-low");
+              gapBadge.textContent = gap > 0 ? "Over-hyped" : "Under-hyped";
+            }
+
+            const scoreText = document.createElement("span");
+            scoreText.className = "score-text";
+            scoreText.textContent = `Reality ${cause.reality}/10 · Hype ${cause.hype}/10`;
+
+            metaEl.appendChild(typeBadge);
+            if (gapBadge) metaEl.appendChild(gapBadge);
+            metaEl.appendChild(scoreText);
+            labels.appendChild(nameEl);
+            labels.appendChild(metaEl);
+
+            // Bars
+            const barsWrapper = document.createElement("div");
+            barsWrapper.className = "bars";
+
+            const track = document.createElement("div");
+            track.className = "bars-track";
+
+            const barReality = document.createElement("div");
+            barReality.className = "bar bar--reality";
+            const barHype = document.createElement("div");
+            barHype.className = "bar bar--hype";
+
+            const realityWidth = (cause.reality / maxScore) * 100;
+            const hypeWidth = (cause.hype / maxScore) * 100;
+
+            barReality.style.width = realityWidth + "%";
+            barHype.style.width = hypeWidth + "%";
+
+            const axis = document.createElement("div");
+            axis.className = "bars-axis";
+            [0, 5, 10].forEach(tick => {
+              const t = document.createElement("div");
+              t.className = "axis-tick" + (tick === 10 ? " axis-tick--max" : "");
+              t.textContent = tick;
+              axis.appendChild(t);
+            });
+
+            track.appendChild(barReality);
+            track.appendChild(barHype);
+            barsWrapper.appendChild(track);
+            barsWrapper.appendChild(axis);
+
+            row.appendChild(labels);
+            row.appendChild(barsWrapper);
+
+            row.addEventListener("mouseenter", () => setActive(row, cause));
+            row.addEventListener("click", () => setActive(row, cause));
+
+            chartMain.appendChild(row);
+          });
+      });
+    }
+
+    function setActive(row, cause) {
+      if (activeState.element) activeState.element.classList.remove("is-active");
+      activeState.element = row;
+      activeState.cause = cause;
+      if (row) row.classList.add("is-active");
+      updateDetail();
+    }
+
+    function updateDetail() {
+      if (!activeState.cause) return;
+      const c = activeState.cause;
+      const gap = c.hype - c.reality;
+      let gapSummary = "";
+      if (gap > 2) gapSummary = "Talked about far more than it actually happens.";
+      else if (gap < -2) gapSummary = "Hugely important in real incidents, yet under-discussed.";
+      else gapSummary = "Reality and attention are reasonably aligned.";
+
+      detailPanel.innerHTML = `
+        <div class="detail-title">${c.name}</div>
+        <div class="detail-body">${c.notes}</div>
+        <div class="detail-metrics">
+          <div class="detail-pill"><strong>Reality:</strong> ${c.reality}/10</div>
+          <div class="detail-pill"><strong>Hype:</strong> ${c.hype}/10</div>
+          <div class="detail-pill"><strong>Gap:</strong> ${gap > 0 ? "+" : ""}${gap} – ${gapSummary}</div>
+        </div>
+      `;
+    }
+
+    render();
+
+    // Default selection
+    const initial = document.querySelector('.row[data-name="Malicious USB Drop / Rubber Ducky"]') ||
+                      document.querySelector('.row');
+    if (initial) {
+      const cause = causes.find(c => c.name === initial.dataset.name);
+      setActive(initial, cause);
+    }
+  });
+</script>
