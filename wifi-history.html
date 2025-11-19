@@ -583,4 +583,288 @@
             <!-- Cards injected by JS -->
           </div>
         </div>
-        <div class="timeline-footer
+        <div class="timeline-footer">
+          <span id="timelineRange">1980s – mid-2020s</span>
+          <div class="hint">
+            Tip: Use <kbd>←</kbd><kbd>→</kbd> or shift + scroll to move along the timeline.
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const events = [
+      {
+        year: "1981–1985",
+        label: "1G Analog Cellular (AMPS & Co.)",
+        category: "core",
+        tag: "1G",
+        body: "Early analog systems like <strong>AMPS</strong> roll out in the US, Japan, and Europe. Voice only, no data, and <strong>no real encryption</strong>—cloning and eavesdropping are common. Adoption remains limited and expensive.",
+        era: "Analog Voice Era",
+        impact: "Laid mobile foundations"
+      },
+      {
+        year: "1991–1995",
+        label: "2G GSM & Digital Security",
+        category: "core",
+        tag: "2G / GSM",
+        body: "<strong>GSM 2G</strong> launches in Europe with digital voice, SMS, and SIM-based identity. Stream ciphers and <strong>A5/1 encryption</strong> make mass eavesdropping harder, and subscriber numbers climb rapidly.",
+        era: "Digital Mobile",
+        impact: "Mass consumer adoption"
+      },
+      {
+        year: "1997–1999",
+        label: "Early Wi-Fi & WEP",
+        category: "trend",
+        tag: "Wi-Fi 802.11",
+        body: "IEEE <strong>802.11 (1997)</strong> and <strong>802.11b (1999)</strong> introduce Wi-Fi. <strong>WEP</strong> promises “wired-equivalent privacy,” but weak key management and RC4 usage soon prove breakable. Adoption starts in enterprises and enthusiasts.",
+        era: "LAN Goes Wireless",
+        impact: "Office & campus pilots"
+      },
+      {
+        year: "1998–2002",
+        label: "Bluetooth Cable Replacement",
+        category: "trend",
+        tag: "Bluetooth 1.x",
+        body: "The <strong>Bluetooth SIG</strong> forms and Bluetooth 1.x hits the market as a short-range cable replacement for headsets and peripherals. Pairing and link-layer encryption provide basic security, with early consumer adoption in phones and PCs.",
+        era: "Personal Area Networks",
+        impact: "Accessory ecosystem starts"
+      },
+      {
+        year: "2000–2003",
+        label: "3G & Mobile Data",
+        category: "core",
+        tag: "3G",
+        body: "Standards like <strong>UMTS / CDMA2000</strong> bring higher data rates and always-on connectivity. Stronger authentication and encryption (e.g. <strong>KASUMI</strong>) appear. Adoption is moderate at first, driven by laptops and early smartphones.",
+        era: "Packet Data Era",
+        impact: "Mobile Internet begins"
+      },
+      {
+        year: "2003–2004",
+        label: "WPA & WPA2 Replace WEP",
+        category: "attack",
+        tag: "Wi-Fi Security",
+        body: "Practical WEP attacks trigger a shift to <strong>WPA (2003)</strong> and <strong>WPA2 / 802.11i (2004)</strong>. AES-based CCMP becomes the default Wi-Fi protection as home and enterprise Wi-Fi deployments accelerate.",
+        era: "Securing WLANs",
+        impact: "Secure Wi-Fi by default"
+      },
+      {
+        year: "2007–2010",
+        label: "Smartphones, 3G & 802.11n",
+        category: "trend",
+        tag: "Wi-Fi 4 / 3G",
+        body: "The <strong>iPhone (2007)</strong>, Android, and <strong>802.11n</strong> make Wi-Fi plus 3G the default connectivity mix. <strong>WPA2</strong> becomes standard in routers. Smartphone adoption explodes into the mainstream.",
+        era: "Smartphone Explosion",
+        impact: "Always-connected users"
+      },
+      {
+        year: "2010–2014",
+        label: "4G LTE & Bluetooth Low Energy",
+        category: "core",
+        tag: "4G / BLE",
+        body: "<strong>LTE 4G</strong> delivers broadband-class mobile data and IP-centric cores. <strong>Bluetooth 4.0 (BLE)</strong> unlocks low-power IoT wearables and sensors. Security improves with stronger AKA and encrypted control planes, but IoT security is still immature.",
+        era: "Mobile Broadband",
+        impact: "Streaming & app economy"
+      },
+      {
+        year: "2015–2018",
+        label: "Wi-Fi 5 & Early IoT Security Shocks",
+        category: "attack",
+        tag: "Wi-Fi 5 / IoT",
+        body: "<strong>802.11ac (Wi-Fi 5)</strong> becomes ubiquitous in homes and offices. Massive WLAN adoption coincides with poorly secured IoT devices and botnets (e.g. Mirai), highlighting the <strong>gap between crypto and configuration</strong>.",
+        era: "High-Throughput Wi-Fi",
+        impact: "Performance vs. security gap"
+      },
+      {
+        year: "2018–2020",
+        label: "WPA3 & Wi-Fi 6",
+        category: "trend",
+        tag: "WPA3 / Wi-Fi 6",
+        body: "The Wi-Fi Alliance introduces <strong>WPA3 (2018)</strong> with SAE, better password handling, and <strong>Enhanced Open (OWE)</strong>. <strong>Wi-Fi 6 / 802.11ax</strong> improves dense-environment performance. High-end routers and laptops lead early adoption.",
+        era: "Dense & Secure WLANs",
+        impact: "Next-gen enterprise rollouts"
+      },
+      {
+        year: "2019–2023",
+        label: "5G Rollout & Standalone Cores",
+        category: "core",
+        tag: "5G NR",
+        body: "<strong>5G NR</strong> deployments ramp globally with massive MIMO, network slicing and service-based cores. Modern AKA, subscriber privacy (e.g. <strong>SUCI</strong>), and better signaling protection arrive as adoption moves from early adopters to the mass market.",
+        era: "Ultra-fast Mobile",
+        impact: "New use cases & SLAs"
+      },
+      {
+        year: "2021–2025",
+        label: "Wi-Fi 6E/7 & Advanced Bluetooth",
+        category: "trend",
+        tag: "Wi-Fi 6E/7",
+        body: "<strong>Wi-Fi 6E</strong> opens the 6 GHz band and <strong>Wi-Fi 7 (802.11be)</strong> emerges for multi-gigabit WLANs. <strong>Bluetooth 5.x–6.0</strong> adds longer range, higher throughput and better positioning. Adoption is strong in new phones, APs and high-end laptops.",
+        era: "Multi-Gig Wireless",
+        impact: "High-density deployments"
+      },
+      {
+        year: "2023–mid-2020s",
+        label: "Sunsetting 2G/3G & Securing Massive IoT",
+        category: "attack",
+        tag: "Legacy & IoT",
+        body: "Operators begin <strong>shutting down 2G/3G</strong> as 4G/5G dominate. Billions of IoT devices force focus on <strong>lightweight crypto, lifecycle management</strong>, and zero-trust-style controls over heterogeneous wireless links.",
+        era: "Legacy Phase-out",
+        impact: "Security at massive scale"
+      }
+    ];
+
+    const timelineItemsEl = document.getElementById('timelineItems');
+    const progressEl = document.getElementById('timelineProgress');
+    const scrollEl = document.getElementById('timelineScroll');
+
+    function createItem(event, index) {
+      const item = document.createElement('article');
+      item.className = 'timeline-item';
+      item.dataset.index = index;
+
+      const dot = document.createElement('div');
+      dot.className = 'timeline-dot';
+      if (event.category === 'attack') {
+        dot.classList.add('timeline-dot--attack');
+      } else if (event.category === 'trend') {
+        dot.classList.add('timeline-dot--trend');
+      }
+
+      const card = document.createElement('div');
+      card.className = 'item-card';
+
+      const year = document.createElement('div');
+      year.className = 'item-year';
+      year.textContent = event.year;
+
+      const title = document.createElement('div');
+      title.className = 'item-title';
+      title.textContent = event.label;
+
+      const tag = document.createElement('div');
+      tag.className = 'item-tag';
+      if (event.category === 'attack') {
+        tag.classList.add('item-tag--attack');
+      } else if (event.category === 'trend') {
+        tag.classList.add('item-tag--trend');
+      }
+      tag.textContent = event.tag;
+
+      const body = document.createElement('div');
+      body.className = 'item-body';
+      body.innerHTML = event.body;
+
+      const meta = document.createElement('div');
+      meta.className = 'item-meta';
+
+      const era = document.createElement('span');
+      era.className = 'pill pill--era';
+      era.textContent = event.era;
+
+      const impact = document.createElement('span');
+      impact.className = 'pill pill--impact';
+      impact.textContent = event.impact;
+
+      meta.appendChild(era);
+      meta.appendChild(impact);
+
+      card.appendChild(year);
+      card.appendChild(title);
+      card.appendChild(tag);
+      card.appendChild(body);
+      card.appendChild(meta);
+
+      item.appendChild(dot);
+      item.appendChild(card);
+
+      card.addEventListener('click', () => {
+        const rect = item.getBoundingClientRect();
+        const containerRect = scrollEl.getBoundingClientRect();
+        const offset = rect.left - containerRect.left - (containerRect.width / 2 - rect.width / 2);
+        scrollEl.scrollBy({ left: offset, behavior: 'smooth' });
+      });
+
+      return item;
+    }
+
+    events.forEach((ev, idx) => {
+      const item = createItem(ev, idx);
+      timelineItemsEl.appendChild(item);
+    });
+
+    const items = Array.from(document.querySelectorAll('.timeline-item'));
+
+    function updateProgress() {
+      const scrollLeft = scrollEl.scrollLeft;
+      const maxScroll = scrollEl.scrollWidth - scrollEl.clientWidth;
+      const ratio = maxScroll > 0 ? scrollLeft / maxScroll : 0;
+      progressEl.style.width = `${Math.max(3, ratio * 100)}%`;
+    }
+
+    function setActiveItemByScroll() {
+      let closest = null;
+      let closestDist = Infinity;
+      const containerCenter = scrollEl.getBoundingClientRect().left + scrollEl.clientWidth / 2;
+
+      items.forEach(item => {
+        const rect = item.getBoundingClientRect();
+        const itemCenter = rect.left + rect.width / 2;
+        const dist = Math.abs(itemCenter - containerCenter);
+        if (dist < closestDist) {
+          closestDist = dist;
+          closest = item;
+        }
+      });
+
+      if (closest) {
+        items.forEach(i => i.classList.remove('is-active'));
+        closest.classList.add('is-active');
+      }
+    }
+
+    scrollEl.addEventListener('scroll', () => {
+      updateProgress();
+      setActiveItemByScroll();
+    });
+
+    updateProgress();
+    setActiveItemByScroll();
+
+    const buttons = document.querySelectorAll('.btn-icon');
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const dir = btn.dataset.dir === 'right' ? 1 : -1;
+        const step = scrollEl.clientWidth * 0.8;
+        scrollEl.scrollBy({ left: dir * step, behavior: 'smooth' });
+      });
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+        e.preventDefault();
+        const dir = e.key === 'ArrowRight' ? 1 : -1;
+        const step = scrollEl.clientWidth * 0.7;
+        scrollEl.scrollBy({ left: dir * step, behavior: 'smooth' });
+      }
+    });
+
+    scrollEl.addEventListener('wheel', (e) => {
+      if (Math.abs(e.deltaX) < Math.abs(e.deltaY)) {
+        scrollEl.scrollBy({ left: e.deltaY, behavior: 'auto' });
+      }
+    });
+
+    window.addEventListener('load', () => {
+      if (items.length) {
+        const midIndex = Math.floor(items.length / 2);
+        const midItem = items[midIndex];
+        const rect = midItem.getBoundingClientRect();
+        const containerRect = scrollEl.getBoundingClientRect();
+        const offset = rect.left - containerRect.left - (containerRect.width / 2 - rect.width / 2);
+        scrollEl.scrollBy({ left: offset, behavior: 'smooth' });
+      }
+    });
+  </script>
+</body>
+</html>
