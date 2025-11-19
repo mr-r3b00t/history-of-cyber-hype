@@ -1,4 +1,442 @@
-<script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cyber Incident Causes – Reality vs Hype</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg: #050713;
+      --bg-alt: #0b1020;
+      --card-bg: rgba(15, 25, 50, 0.9);
+      --card-border: rgba(88, 166, 255, 0.6);
+      --accent: #58a6ff;
+      --accent-soft: rgba(88, 166, 255, 0.25);
+      --text: #f6f7ff;
+      --muted: #9fa6c0;
+      --danger: #ff4d6a;
+      --reality: #22c55e;
+      --hype: #f97316;
+      --radius-lg: 16px;
+      --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.6);
+      --blur: 18px;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, #171b41 0, transparent 60%),
+        radial-gradient(circle at bottom right, #09142b 0, transparent 55%),
+        radial-gradient(circle at center, #040617 0, #03030a 60%);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 32px 20px 40px;
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+    }
+    .app {
+      width: 100%;
+      max-width: 1100px;
+      position: relative;
+    }
+    .app::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 10% 20%, rgba(88, 166, 255, 0.15) 0, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255, 77, 106, 0.12) 0, transparent 50%);
+      pointer-events: none;
+      opacity: 0.6;
+      z-index: -1;
+    }
+    header {
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    h1 {
+      font-size: clamp(1.8rem, 2.4vw, 2.2rem);
+      font-weight: 650;
+      letter-spacing: 0.03em;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+    h1 span.glow-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      background: radial-gradient(circle, var(--accent) 0, #0affff 40%, transparent 70%);
+      box-shadow:
+        0 0 12px rgba(88, 166, 255, 0.9),
+        0 0 22px rgba(10, 255, 255, 0.6);
+    }
+    .subtitle {
+      color: var(--muted);
+      max-width: 720px;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    .legend {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      font-size: 0.82rem;
+      color: var(--muted);
+      flex-wrap: wrap;
+    }
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(15, 25, 50, 0.7);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      backdrop-filter: blur(10px);
+    }
+    .legend-swatch {
+      width: 14px;
+      height: 8px;
+      border-radius: 999px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+    .legend-swatch--reality {
+      background: linear-gradient(90deg, #16a34a, var(--reality));
+      box-shadow: 0 0 14px rgba(34, 197, 94, 0.9);
+    }
+    .legend-swatch--hype {
+      background: linear-gradient(90deg, #ea580c, var(--hype));
+      box-shadow: 0 0 14px rgba(249, 115, 22, 0.9);
+    }
+    .chart-shell {
+      position: relative;
+      border-radius: 24px;
+      padding: 20px 20px 18px;
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.98), rgba(2, 6, 23, 0.98));
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      box-shadow:
+        0 0 0 1px rgba(15, 23, 42, 0.7),
+        var(--shadow-soft);
+      overflow: hidden;
+      backdrop-filter: blur(var(--blur));
+    }
+    .chart-shell::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 0 0, rgba(88, 166, 255, 0.13) 0, transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(255, 77, 106, 0.09) 0, transparent 45%);
+      mix-blend-mode: screen;
+      opacity: 0.7;
+      pointer-events: none;
+    }
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .chart-label {
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .chart-label-line {
+      height: 1px;
+      flex: 1;
+      background: linear-gradient(90deg, rgba(148, 163, 184, 0.1), rgba(148, 163, 184, 0.6), rgba(148, 163, 184, 0.1));
+    }
+    .chart-main {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 4px;
+    }
+    .group-title {
+      margin-top: 10px;
+      margin-bottom: 4px;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: rgba(148, 163, 184, 0.9);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .group-title::before {
+      content: "";
+      width: 26px;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(148, 163, 184, 0.3), rgba(148, 163, 184, 0.8));
+      border-radius: 999px;
+    }
+    .row {
+      display: grid;
+      grid-template-columns: minmax(0, 220px) minmax(0, 1fr);
+      gap: 16px;
+      padding: 6px 10px;
+      border-radius: 12px;
+      background: radial-gradient(circle at left, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.9));
+      border: 1px solid rgba(30, 64, 175, 0.45);
+      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.95);
+      cursor: pointer;
+      transition:
+        background 0.18s ease-out,
+        border-color 0.18s ease-out,
+        box-shadow 0.18s ease-out,
+        transform 0.15s ease-out;
+      align-items: center;
+    }
+    .row + .row {
+      margin-top: 4px;
+    }
+    .row:hover {
+      border-color: rgba(88, 166, 255, 0.9);
+      box-shadow:
+        0 18px 45px rgba(15, 23, 42, 1),
+        0 0 18px rgba(88, 166, 255, 0.6);
+      transform: translateY(-1px);
+    }
+    .row.is-active {
+      border-color: rgba(56, 189, 248, 0.95);
+      box-shadow:
+        0 18px 45px rgba(15, 23, 42, 1),
+        0 0 25px rgba(56, 189, 248, 0.9);
+      background:
+        linear-gradient(115deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.95)),
+        radial-gradient(circle at left, rgba(37, 99, 235, 0.28), transparent 65%);
+    }
+    .row-labels {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .cause-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    .cause-meta {
+      font-size: 0.75rem;
+      color: rgba(148, 163, 184, 0.9);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    .badge {
+      padding: 1px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .badge--type {
+      border-color: rgba(88, 166, 255, 0.8);
+      color: var(--accent);
+    }
+    .badge--gap-high {
+      border-color: rgba(249, 115, 22, 0.9);
+      color: var(--hype);
+    }
+    .badge--gap-low {
+      border-color: rgba(34, 197, 94, 0.9);
+      color: var(--reality);
+    }
+    .score-text {
+      opacity: 0.9;
+    }
+    .bars {
+      position: relative;
+      padding: 2px 0;
+    }
+    .bars-track {
+      position: relative;
+      height: 22px;
+      border-radius: 999px;
+      background: radial-gradient(circle at center, rgba(15, 23, 42, 1), rgba(15, 23, 42, 0.9));
+      box-shadow: inset 0 0 0 1px rgba(30, 64, 175, 0.7);
+      overflow: hidden;
+    }
+    .bar {
+      position: absolute;
+      top: 2px;
+      bottom: 2px;
+      border-radius: 999px;
+      transition:
+        width 0.4s cubic-bezier(0.22, 0.82, 0.25, 1),
+        opacity 0.2s ease-out,
+        box-shadow 0.2s ease-out;
+      opacity: 0.9;
+    }
+    .bar--reality {
+      left: 4px;
+      background: linear-gradient(90deg, #166534, var(--reality));
+      box-shadow:
+        0 0 14px rgba(34, 197, 94, 0.8),
+        0 0 28px rgba(22, 163, 74, 0.7);
+    }
+    .bar--hype {
+      left: 4px;
+      background: linear-gradient(90deg, #c2410c, var(--hype));
+      mix-blend-mode: screen;
+      box-shadow:
+        0 0 16px rgba(249, 115, 22, 0.85),
+        0 0 32px rgba(250, 204, 21, 0.4);
+      opacity: 0.8;
+    }
+    .bars-axis {
+      position: absolute;
+      inset: 0 10px 0 10px;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      color: rgba(148, 163, 184, 0.7);
+    }
+    .axis-tick {
+      position: relative;
+    }
+    .axis-tick::before {
+      content: "";
+      position: absolute;
+      top: -11px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1px;
+      height: 7px;
+      background: rgba(148, 163, 184, 0.55);
+      border-radius: 999px;
+    }
+    .axis-tick--max::before {
+      height: 10px;
+      background: rgba(248, 250, 252, 0.85);
+    }
+    .chart-footer {
+      margin-top: 12px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(30, 64, 175, 0.7);
+      font-size: 0.8rem;
+      color: var(--muted);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .detail-title {
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: rgba(148, 163, 184, 0.9);
+    }
+    .detail-body {
+      font-size: 0.86rem;
+      line-height: 1.4;
+    }
+    .detail-body strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+    .detail-metrics {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 4px;
+      font-size: 0.8rem;
+    }
+    .detail-pill {
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.9);
+    }
+    .detail-pill strong {
+      font-weight: 600;
+    }
+    @media (max-width: 768px) {
+      body {
+        padding-inline: 12px;
+      }
+      .chart-shell {
+        padding-inline: 12px;
+      }
+      .row {
+        grid-template-columns: minmax(0, 180px) minmax(0, 1fr);
+      }
+    }
+    @media (max-width: 560px) {
+      .row {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="title-row">
+        <h1>
+          <span class="glow-dot"></span>
+          Cyber Incident Causes
+        </h1>
+      </div>
+      <p class="subtitle">
+        A qualitative comparison of <strong>Reality vs Hype</strong> for common
+        initial access techniques and internal compromise paths.
+        Reality reflects how often they appear in real incidents;
+        Hype reflects how much air-time they get in conversations, media and marketing.
+      </p>
+      <div class="legend">
+        <div class="legend-item">
+          <span class="legend-swatch legend-swatch--reality"></span>
+          Reality – observed in real breaches
+        </div>
+        <div class="legend-item">
+          <span class="legend-swatch legend-swatch--hype"></span>
+          Hype – talked about & marketed
+        </div>
+      </div>
+    </header>
+    <section class="chart-shell">
+      <div class="chart-header">
+        <div class="chart-label">
+          Reality vs Hype (0–10)
+          <div class="chart-label-line"></div>
+        </div>
+      </div>
+      <div class="chart-main" id="chartMain">
+        <!-- JS will inject groups & rows -->
+      </div>
+      <div class="chart-footer" id="detailPanel">
+        <div class="detail-title">Selected cause</div>
+        <div class="detail-body">
+          Hover or tap a row to see context on where reality and hype diverge.
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
   document.addEventListener("DOMContentLoaded", () => {
     // Expanded qualitative dataset
     const causes = [
@@ -303,3 +741,5 @@
     }
   });
 </script>
+</body>
+</html>
