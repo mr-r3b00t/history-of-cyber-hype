@@ -1,96 +1,122 @@
-o<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Cybersecurity: Reality vs Hype – 2025 Demo</title>
+  <title>Cybersecurity: Reality vs Hype (2025 Edition)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     :root {
-      --bg: #050713; --card: rgba(15,25,50,0.96); --border: rgba(88,166,255,0.4);
-      --accent: #58a6ff; --text: #f6f7ff; --muted: #94a3b8;
-      --reality: #22c55e; --hype: #f97316;
+      --bg: #050713;
+      --card: rgba(15, 25, 50, 0.96);
+      --border: rgba(88, 166, 255, 0.4);
+      --accent: #58a6ff;
+      --text: #f6f7ff;
+      --muted: #94a3b8;
+      --reality: #22c55e;
+      --hype: #f97316;
     }
     * { margin:0; padding:0; box-sizing:border-box; }
     body {
-      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background: radial-gradient(circle at 10% 20%, #171b41 0%, transparent 60%),
                   radial-gradient(circle at 90% 80%, #09142b 0%, transparent 55%),
                   #040617;
-      color: var(--text); min-height: 100vh; padding: 2rem 1rem;
-      display: grid; place-items: center;
+      color: var(--text);
+      min-height: 100vh;
+      padding: 2rem 1rem;
+      display: grid;
+      place-items: center;
     }
-    .app { max-width: 1240px; width: 100%; }
-    h1 { font-size: clamp(2.3rem,5vw,3.2rem); font-weight: 700; display:flex; align-items:center; gap:16px; margin-bottom:0.5rem; }
-    .glow { width:16px; height:16px; border-radius:50%; background:radial-gradient(circle,#58a6ff,#0affff); box-shadow:0 0 30px #58a6ff; animation:pulse 4s infinite; }
-    @keyframes pulse { 50% { opacity:0.6; } }
-    .subtitle { font-size:1.12rem; color:var(--muted); line-height:1.6; max-width:960px; margin:1rem 0 2rem; }
-    .legend { display:flex; gap:1.5rem; flex-wrap:wrap; margin-bottom:2rem; font-size:0.98rem; }
-    .legend-item { display:flex; align-items:center; gap:10px; padding:8px 18px; background:rgba(30,41,59,0.6); border-radius:2rem; border:1px solid rgba(148,163,184,0.3); }
-    .swatch { width:20px; height:12px; border-radius:1rem; box-shadow:0 0 12px currentColor; }
-    .swatch-r { background:linear-gradient(90deg,#166534,var(--reality)); }
-    .swatch-h { background:linear-gradient(90deg,#c2410c,var(--hype)); }
+    .app { width: 100%; max-width: 1200px; }
+    h1 {
+      font-size: clamp(2.2rem, 5vw, 3rem);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 0.5rem;
+    }
+    .glow {
+      width: 16px; height: 16px; border-radius: 50%;
+      background: radial-gradient(circle, #58a6ff, #0affff);
+      box-shadow: 0 0 30px #58a6ff;
+      animation: pulse 4s infinite;
+    }
+    @keyframes pulse { 50% { opacity: 0.6; } }
+    .subtitle { font-size: 1.1rem; color: var(--muted); max-width: 900px; line-height: 1.6; margin-bottom: 2rem; }
+    .legend { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 2rem; font-size: 0.95rem; }
+    .legend-item { display: flex; align-items: center; gap: 10px; padding: 8px 16px; background: rgba(30,41,59,0.6); border-radius: 2rem; border: 1px solid rgba(148,163,184,0.3); }
+    .swatch { width: 18px; height: 11px; border-radius: 1rem; box-shadow: 0 0 12px currentColor; }
+    .swatch-r { background: linear-gradient(90deg, #166534, var(--reality)); }
+    .swatch-h { background: linear-gradient(90deg, #c2410c, var(--hype)); }
 
-    .chart { background:var(--card); border:1px solid var(--border); border-radius:2rem; padding:2rem; backdrop-filter:blur(20px); box-shadow:0 30px 70px rgba(0,0,0,0.8); }
-    .chart-header { font-size:0.92rem; text-transform:uppercase; letter-spacing:0.14em; color:var(--muted); display:flex; align-items:center; gap:12px; margin-bottom:1.5rem; }
-    .line { flex:1; height:1px; background:linear-gradient(90deg,transparent,var(--muted),transparent); }
+    .chart {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 1.8rem;
+      padding: 2rem;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 25px 60px rgba(0,0,0,0.8);
+    }
+    .chart-header { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); display: flex; align-items: center; gap: 12px; margin-bottom: 1.5rem; }
+    .line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--muted), transparent); }
 
-    #chartMain { display:grid; gap:0.9rem; position:relative; }
-    .group-title { margin:2.2rem 0 0.9rem; font-size:0.94rem; text-transform:uppercase; letter-spacing:0.2em; color:#94a3b8; display:flex; align-items:center; gap:14px; }
-    .group-title::before { content:""; width:44px; height:1px; background:linear-gradient(90deg,transparent,#64748b); }
+    #chartMain { display: grid; gap: 0.8rem; }
+    .group-title {
+      margin: 2rem 0 0.8rem;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .group-title::before { content: ""; width: 40px; height: 1px; background: linear-gradient(90deg, transparent, #64748b); }
 
     .row {
-      display:grid; grid-template-columns:minmax(320px,1fr) 1fr; gap:1.3rem; padding:1.1rem 1.3rem;
-      border-radius:1.3rem; background:rgba(15,23,42,0.85); border:1px solid rgba(59,130,246,0.3);
-      cursor:pointer; transition:all 0.3s ease; position:relative;
-    }
-    .row:hover { border-color:#58a6ff; background:rgba(30,41,59,0.75); transform:translateY(-4px); box-shadow:0 18px 50px rgba(0,0,0,0.7); }
-    .row.active { border-color:#0ea5e9; background:linear-gradient(135deg,rgba(15,23,42,0.95),rgba(30,41,59,0.85)); box-shadow:0 0 40px rgba(14,165,233,0.7); }
-
-    .label { display:flex; flex-direction:column; gap:7px; }
-    .name { font-weight:600; font-size:1.04rem; }
-    .meta { display:flex; flex-wrap:wrap; gap:11px; font-size:0.84rem; color:var(--muted); align-items:center; }
-    .badge { padding:5px 12px; border-radius:2rem; font-size:0.74rem; font-weight:600; text-transform:uppercase; }
-    .type { background:rgba(59,130,246,0.2); border:1px solid #58a6ff; color:#58a6ff; }
-    .over { background:rgba(251,146,60,0.2); border:1px solid #fb923c; color:#fb923c; }
-    .under { background:rgba(52,211,153,0.2); border:1px solid #34d399; color:#34d399; }
-
-    .bars { position:relative; height:44px; background:rgba(0,0,0,0.5); border-radius:1rem; overflow:hidden; box-shadow:inset 0 0 15px rgba(0,0,0,0.8); }
-    .bar { position:absolute; top:8px; bottom:8px; left:8px; border-radius:1rem; transition:width 0.7s cubic-bezier(0.22,0.82,0.25,1); }
-    .reality { background:linear-gradient(90deg,#166534,var(--reality)); box-shadow:0 0 22px rgba(34,197,94,0.9); }
-    .hype { background:linear-gradient(90deg,#c2410c,var(--hype)); box-shadow:0 0 22px rgba(249,115,22,0.9); opacity:0.88; }
-    .axis { position:absolute; inset:0 16px; display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; color:#64748b; pointer-events:none; }
-    .tick:last-child::before { content:""; position:absolute; top:-14px; left:50%; width:1px; height:16px; background:#e2e8f0; transform:translateX(-50%); }
-
-    /* Floating tooltip on hover */
-    .tooltip {
-      position: absolute;
-      background: rgba(15,23,42,0.98);
-      border: 1px solid rgba(88,166,255,0.6);
-      border-radius: 1rem;
+      display: grid;
+      grid-template-columns: minmax(300px, 1fr) 1fr;
+      gap: 1.2rem;
       padding: 1rem 1.2rem;
-      max-width: 420px;
-      z-index: 100;
-      backdrop-filter: blur(16px);
-      box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.25s ease, transform 0.25s ease;
-      transform: translateY(10px);
+      border-radius: 1.2rem;
+      background: rgba(15,23,42,0.8);
+      border: 1px solid rgba(59,130,246,0.3);
+      cursor: pointer;
+      transition: all 0.3s ease;
     }
-    .tooltip.visible { opacity:1; transform:translateY(0); pointer-events:auto; }
-    .tooltip-title { font-weight:600; font-size:1rem; margin-bottom:0.4rem; color:var(--accent); }
-    .tooltip-body { font-size:0.92rem; line-height:1.5; color:var(--text); }
-    .tooltip-pills { display:flex; gap:0.8rem; margin-top:0.8rem; flex-wrap:wrap; }
-    .tooltip-pill { padding:5px 10px; background:rgba(30,41,59,0.9); border:1px solid rgba(148,163,184,0.4); border-radius:2rem; font-size:0.82rem; }
+    .row:hover { border-color: #58a6ff; background: rgba(30,41,59,0.7); transform: translateY(-3px); box-shadow: 0 15px40pxrgba(0,0,0,0.6); }
+    .row.active { border-color: #0ea5e9; background: linear-gradient(135deg,rgba(15,23,42,0.95),rgba(30,41,59,0.8)); box-shadow: 0 0 35px rgba(14,165,233,0.6); }
 
-    @media (max-width:880px) { .row { grid-template-columns:1fr; } .tooltip { max-width:90%; } }
+    .label { display: flex; flex-direction: column; gap: 6px; }
+    .name { font-weight: 600; font-size: 1.02rem; }
+    .meta { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.82rem; color: var(--muted); align-items: center; }
+    .badge { padding: 4px 10px; border-radius: 2rem; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; }
+    .type { background: rgba(59,130,246,0.2); border: 1px solid #58a6ff; color: #58a6ff; }
+    .over { background: rgba(251,146,60,0.2); border: 1px solid #fb923c; color: #fb923c; }
+    .under { background: rgba(52,211,153,0.2); border: 1px solid #34d399; color: #34d399; }
+
+    .bars { position: relative; height: 40px; background: rgba(0,0,0,0.4); border-radius: 1rem; overflow: hidden; box-shadow: inset 0 0 15px rgba(0,0,0,0.7); }
+    .bar { position: absolute; top: 7px; bottom: 7px; left: 7px; border-radius: 1rem; transition: width 0.7s cubic-bezier(0.22,0.82,0.25,1); }
+    .reality { background: linear-gradient(90deg, #166534, var(--reality)); box-shadow: 0 0 20px rgba(34,197,94,0.9); }
+    .hype { background: linear-gradient(90deg, #c2410c, var(--hype)); box-shadow: 0 0 20px rgba(249,115,22,0.9); opacity: 0.88; }
+    .axis { position: absolute; inset: 0 14px; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem; color:#64748b; pointer-events:none; }
+    .tick:last-child::before { content:""; position:absolute; top:-12px; left:50%; width:1px; height:14px; background:#e2e8f0; transform:translateX(-50%); }
+
+    .footer { padding-top: 1.5rem; border-top: 1px solid rgba(59,130,246,0.5); }
+    .f-title { font-size: 0.92rem; text-transform: uppercase; letter-spacing: 0.1em; color: #94a3b8; margin-bottom: 0.5rem; }
+    .f-body { line-height: 1.55; margin-bottom: 1rem; }
+    .pills { display: flex; flex-wrap: wrap; gap: 1rem; }
+    .pill { padding: 8px 14px; background: rgba(30,41,59,0.8); border: 1px solid rgba(148,163,184,0.5); border-radius: 2rem; font-size: 0.88rem; }
+
+    @media (max-width: 860px) { .row { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
   <div class="app">
-    <h1><div class="glow"></div>Cybersecurity: Reality vs Hype – 2025 Demo</h1>
+    <h1><div class="glow"></div>Cybersecurity: Reality vs Hype – 2025 Edition</h1>
     <p class="subtitle">
-      Hover (or tap on mobile) any row to see the real-world explanation instantly.
+      What actually causes breaches and data leaks today vs. what gets the headlines, vendor decks, and Hollywood scenes.
     </p>
     <div class="legend">
       <div class="legend-item"><div class="swatch swatch-r"></div>Reality – seen in real incidents</div>
@@ -100,52 +126,48 @@ o<!DOCTYPE html>
     <div class="chart">
       <div class="chart-header">Reality vs Hype (0–10)<div class="line"></div></div>
       <div id="chartMain"></div>
-    </div>
 
-    <!-- Floating tooltip -->
-    <div id="tooltip" class="tooltip"></div>
+      <div class="footer" id="detailPanel">
+        <div class="f-title">Hover or tap any row →</div>
+        <div class="f-body">Discover the real drivers of breaches… and the myths we love to sell.</div>
+      </div>
+    </div>
   </div>
 
   <script>
     const data = [
-      // Initial Access
-      { g:"Initial Access", n:"Phishing & Helpdesk Impersonation", t:"Social Engineering", r:9.7, h:7.4, note:"Still the #1 ransomware and BEC vector. MFA bombing and callback phishing everywhere." },
-      { g:"Initial Access", n:"Stolen/Reused Credentials", t:"Infostealers & IABs", r:9.6, h:7.8, note:"Initial Access Brokers sell valid corporate logins daily on Genesis, Russian Market, etc." },
-      { g:"Initial Access", n:"Zero-Day in VPN/Edge Appliances", t:"Zero-Day", r:8.7, h:9.6, note:"Ivanti, Palo Alto, Citrix Bleed, FortiGate SSL-VPN — a real and frequent high-impact vector." },
-      { g:"Initial Access", n:"Known Vuln in Edge Devices", t:"Patch Hygiene", r:8.9, h:6.2, note:"Attackers camp on unpatched VPNs, firewalls, and proxies for months/years." },
-      { g:"Initial Access", n:"Compromised MSP / RMM Tools", t:"Supply Chain", r:8.5, h:7.0, note:"Kaseya, ConnectWise, SolarWinds-style attacks give access to hundreds of customers." },
-      { g:"Initial Access", n:"Weak / Default / Bypassable MFA", t:"Identity", r:8.8, h:5.5, note:"SMS, push fatigue, MFA reuse across sites — attackers bypass MFA constantly." },
-      { g:"Initial Access", n:"Malicious USB Cables (O.MG)", t:"Physical Gadget", r:0.6, h:9.4, note:"Cool demo. Zero documented enterprise breaches from charging cable implants." },
-      { g:"Initial Access", n:"Rubber Ducky / USB Drop", t:"Physical Myth", r:0.8, h:9.2, note:"Real criminals don’t scatter $60 HID devices in parking lots." },
-      { g:"Initial Access", n:"Bluetooth / BlueBorne Attacks", t:"Wireless Myth", r:0.9, h:8.7, note:"2017 called — still not happening in the wild." },
-      { g:"Initial Access", n:"Rogue Access Points", t:"Wireless Myth", r:1.5, h:8.8, note:"Still taught in every cert class. Almost never the start of a real breach." },
+      // === Initial Access ===
+      { g:"Initial Access", n:"Phishing & Helpdesk Impersonation", t:"Social Engineering", r:9.6, h:7.2, note:"Still the #1 way ransomware and BEC start. Fake MFA prompts and callback phishing are relentless." },
+      { g:"Initial Access", n:"Stolen / Reused Credentials", t:"Infostealers & Markets", r:9.4, h:7.5, note:"Billions of creds from stealer logs fuel VPN, O365, RDP access every day." },
+      { g:"Initial Access", n:"Known Vuln in Edge Devices", t:"Patch Hygiene", r:8.8, h:6.0, note:"ProxyShell, CitrixBleed, old FortiGate bugs — attackers live on unpatched edge gear." },
+      { g:"Initial Access", n:"Brute Force / Stuffing", t:"Login Abuse", r:7.9, h:4.8, note:"RDP and VPN portals with weak/no MFA are sprayed 24/7." },
+      { g:"Initial Access", n:"Zero-Day in VPN/Edge", t:"Zero-Day", r:4.0, h:10, note:"Ivanti, Palo Alto, MoveIt — massive panic and marketing when they drop." },
+      { g:"Initial Access", n:"Malicious USB Cables (O.MG, etc.)", t:"Physical / Gadget Myth", r:0.7, h:9.3, note:"Cool at Black Hat/DEF CON. Almost never seen in real enterprise breaches." },
+      { g:"Initial Access", n:"Rubber Ducky / USB Drop", t:"Physical Myth", r:0.8, h:9.1, note:"Endlessly demoed. Real criminals don’t scatter $60 duckies in parking lots." },
+      { g:"Initial Access", n:"Public Wi-Fi MITM", t:"Wireless Myth", r:1.8, h:8.4, note:"Still in every corporate travel briefing. Almost never the start of a real breach." },
 
-      // Internal Compromise
-      { g:"Internal Compromise", n:"Active Directory Takeover", t:"Identity", r:9.8, h:6.5, note:"The crown jewels. Most ransomware ends with domain admin." },
-      { g:"Internal Compromise", n:"Service Account Abuse", t:"Identity", r:9.2, h:4.0, note:"Over-privileged, never-rotated service accounts are everywhere." },
-      { g:"Internal Compromise", n:"Identity Provider Compromise", t:"Identity", r:8.6, h:7.8, note:"Okta, Azure AD, PingFederate breaches give attackers the keys to the kingdom." },
-      { g:"Internal Compromise", n:"Virtualization Takeover", t:"Blast Radius", r:8.9, h:5.2, note:"One compromised vCenter/ESXi = game over for the data center." },
-      { g:"Internal Compromise", n:"Backup Sabotage", t:"Recovery", r:8.7, h:4.8, note:"Standard ransomware play since 2021." },
-      { g:"Internal Compromise", n:"BIOS / UEFI Rootkits", t:"Firmware Myth", r:0.4, h:8.9, note:"Nation-state only, almost never seen outside LoJax/MoonBounce." },
-      { g:"Internal Compromise", n:"Fileless Malware = Undetectable", t:"Marketing Myth", r:3.0, h:9.0, note:"LOLBins are fileless, yes — but very detectable with modern EDR." },
+      // === Internal Compromise ===
+      { g:"Internal Compromise", n:"Active Directory Takeover", t:"Identity", r:9.7, h:6.3, note:"Golden tickets, DCSync, misconfigs — how most environments actually fall completely." },
+      { g:"Internal Compromise", n:"Virtualization Platform Takeover", t:"Blast Radius", r:8.9, h:5.1, note:"One compromised vCenter/ESXi = encrypt the entire data center." },
+      { g:"Internal Compromise", n:"Backup Deletion / Encryption", t:"Recovery Sabotage", r:8.5, h:4.7, note:"Now table-stakes for serious ransomware crews." },
+      { g:"Internal Compromise", n:"Living-off-the-Land (LOLBins)", t:"Stealth", r:9.3, h:6.0, note:"Attackers love built-in tools because they don’t trigger EDR." },
 
-      // Data Exposure & Leaks
-      { g:"Data Exposure & Leaks", n:"Open S3 / Cloud Storage", t:"Misconfig", r:9.7, h:3.2, note:"Still the #1 cause of massive public data leaks every single year." },
-      { g:"Data Exposure & Leaks", n:"Exposed Git / .env / API Keys", t:"Misconfig", r:9.4, h:4.0, note:"GitHub leaks are a daily occurrence and fuel countless breaches." },
-      { g:"Data Exposure & Leaks", n:"Email to Wrong Recipient", t:"Human Error", r:9.1, h:2.2, note:"The most common way regulated data actually leaves organizations." },
-      { g:"Data Exposure & Leaks", n:"Incorrect Redaction", t:"Human Error", r:8.8, h:1.8, note:"Hidden layers, bad OCR, metadata — happens constantly in legal & healthcare." },
-      { g:"Data Exposure & Leaks", n:"Open Directories", t:"Misconfig", r:8.6, h:2.5, note:"Still leaking backups, customer DBs, HR files every week." },
+      // === Over-hyped Defenses / Concepts ===
+      { g:"Over-hyped Defenses", n:"DNSSEC will stop everything", t:"Crypto Panacea", r:1.5, h:8.8, note:"Almost no real-world attacker is stopped by DNSSEC. Most breaches don’t even touch DNS." },
+      { g:"Over-hyped Defenses", n:"TLS / Certificate weaknesses", t:"Crypto Myth", r:2.2, h:8.5, note:"Man-in-the-middle of HTTPS is extremely rare in practice. Misconfig and stolen creds dominate." },
+      { g:"Over-hyped Defenses", n:"AI-Powered Polymorphic Malware", t:"Futuristic", r:0.7, h:9.5, note:"Every vendor sells “AI vs AI”. Real incidents: virtually zero." },
+      { g:"Over-hyped Defenses", n:"Quantum breaking encryption tomorrow", t:"Sci-Fi", r:0.0, h:7.8, note:"Harvest-now-decrypt-later is real, but large-scale breaks are decades away." },
 
-      // Over-hyped Defenses / Concepts
-      { g:"Over-hyped Defenses", n:"DNSSEC will stop attacks", t:"Crypto Myth", r:1.4, h:8.9, note:"Almost no real attacker is stopped by DNSSEC." },
-      { g:"Over-hyped Defenses", n:"TLS weaknesses as primary cause", t:"Crypto Myth", r:2.1, h:8.6, note:"MITM of HTTPS is extremely rare. Stolen creds dominate." },
-      { g:"Over-hyped Defenses", n:"Blockchain / Web3 for identity", t:"Future Myth", r:0.8, h:9.1, note:"Still zero mainstream enterprise adoption for identity." },
-      { g:"Over-hyped Defenses", n:"AI-Powered Polymorphic Malware", t:"Futuristic", r:0.7, h:9.6, note:"Vendors love “AI vs AI”. Real world: almost none." },
-      { g:"Over-hyped Defenses", n:"Quantum breaking encryption soon", t:"Sci-Fi", r:0.0, h:7.9, note:"Harvest-now-decrypt-later is real, but large-scale breaks are 15–30+ years away." }
+      // === Data Breaches & Leaks (the boring but dominant reality) ===
+      { g:"Data Breaches & Leaks", n:"Open S3 / Cloud Storage Buckets", t:"Misconfiguration", r:9.5, h:3.5, note:"The #1 cause of massive public data exposures year after year." },
+      { g:"Data Breaches & Leaks", n:"Open Directories / Exposed Web Folders", t:"Misconfiguration", r:8.8, h:3.0, note:"Still leaking health records, backups, HR files, customer DBs daily." },
+      { g:"Data Breaches & Leaks", n:"Emailing Data to Wrong Recipient", t:"Human Error", r:9.0, h:2.5, note:"The most common way regulated data actually walks out the door." },
+      { g:"Data Breaches & Leaks", n:"Incorrect Redaction (PDFs, Screenshots)", t:"Human Error", r:8.7, h:2.0, note:"Black bar didn’t cover the text, hidden layers, metadata — happens constantly in legal, healthcare, gov." }
     ];
 
     const chart = document.getElementById("chartMain");
-    const tooltip = document.getElementById("tooltip");
+    const panel = document.getElementById("detailPanel");
+    let active = null;
 
     function render() {
       const groups = [...new Set(data.map(i => i.g))];
@@ -183,33 +205,21 @@ o<!DOCTYPE html>
             </div>
           `;
 
-          // Hover / tap handling
-          const show = (e) => {
-            const rect = row.getBoundingClientRect();
-            const tooltipX = rect.right + 16;
-            const tooltipY = rect.top + window.scrollY - 20;
-
-            tooltip.innerHTML = `
-              <div class="tooltip-title">${item.n}</div>
-              <div class="tooltip-body">${item.note}</div>
-              <div class="tooltip-pills">
-                <div class="tooltip-pill"><strong>Reality:</strong> ${item.r}/10</div>
-                <div class="tooltip-pill"><strong>Hype:</strong> ${item.h}/10</div>
-                <div class="tooltip-pill"><strong>Gap:</strong> ${gap>0?'+' : ''}${gap}</div>
+          const activate = () => {
+            if (active) active.classList.remove("active");
+            row.classList.add("active");
+            active = row;
+            panel.innerHTML = `
+              <div class="f-title">${item.n}</div>
+              <div class="f-body">${item.note}</div>
+              <div class="pills">
+                <div class="pill"><strong>Reality:</strong> ${item.r}/10</div>
+                <div class="pill"><strong>Hype:</strong> ${item.h}/10</div>
+                <div class="pill"><strong>Gap:</strong> ${gap>0?'+' : ''}${gap} → ${gap>2?'Heavily over-hyped':gap<-2?'Dangerously under-hyped':'About right'}</div>
               </div>
             `;
-            tooltip.style.left = tooltipX + "px";
-            tooltip.style.top = tooltipY + "px";
-            tooltip.classList.add("visible");
           };
-
-          const hide = () => tooltip.classList.remove("visible");
-
-          row.addEventListener("mouseenter", show);
-          row.addEventListener("mousemove", show);
-          row.addEventListener("mouseleave", hide);
-          row.addEventListener("click", (e) => { show(e); e.stopPropagation(); });
-
+          row.onclick = row.onmouseenter = activate;
           chart.appendChild(row);
         });
       });
@@ -217,8 +227,22 @@ o<!DOCTYPE html>
 
     render();
 
-    // Hide tooltip when clicking elsewhere
-    document.addEventListener("click", () => tooltip.classList.remove("visible"));
+    // Default: highlight the king of misconfig
+    const defaultRow = document.querySelector('[data-name="Open S3 / Cloud Storage Buckets"]') || document.querySelector('.row');
+    if (defaultRow) {
+      const item = data.find(i => i.n === defaultRow.dataset.name);
+      defaultRow.classList.add("active");
+      active = defaultRow;
+      panel.innerHTML = `
+        <div class="f-title">${item.n}</div>
+        <div class="f-body">${item.note}</div>
+        <div class="pills">
+          <div class="pill"><strong>Reality:</strong> ${item.r}/10</div>
+          <div class="pill"><strong>Hype:</strong> ${item.h}/10</div>
+          <div class="pill"><strong>Gap:</strong> ${item.h-item.r} → Dangerously under-hyped</div>
+        </div>
+      `;
+    }
   </script>
 </body>
 </html>
